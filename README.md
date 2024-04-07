@@ -16,6 +16,12 @@ Install Python DotEnv
 
 `pip install python-dotenv`
 
+Create `.env` file
+
+`cp .env.example .env`
+
+Set the API keys for OpenAI and Gemini
+
 ### Run Application
 
 `streamlit run app.py`
