@@ -1,8 +1,15 @@
+import os
+from dotenv import load_dotenv
 import streamlit as st
 import google.generativeai as genai
-from apikey import google_gemini_api_key
 
-genai.configure(api_key=google_gemini_api_key)
+load_dotenv()
+
+from openai import OpenAI
+client = OpenAI(api_key = os.environ['OPENAI_KEY'])
+
+
+genai.configure(api_key = os.environ['GOOGLE_GEMINI_KEY'])
 
 # Set up the model
 generation_config = {
@@ -66,12 +73,23 @@ with st.sidebar:
       },
     ])
 
-    response = convo.send_message('YOUR_USER_INPUT')
     # print(convo.last.text)
 
     submit_button = st.button('Generate Article')
 
 if submit_button:
-    # st.image('https://images.unsplash.com/photo-1674027444485-cec3da58eef4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzMDAzMzh8MHwxfHNlYXJjaHwxOHx8YWl8ZW58MHx8fHwxNzEyMDA3NDM1fDA&ixlib=rb-4.0.3&q=80&w=1080')
+    response = convo.send_message('YOUR_USER_INPUT')
 
+    # image_response = client.images.generate(
+    #   model="dall-e-3",
+    #   prompt=f"Generate a blog post image for the article titled '{blog_title}'",
+    #   size="1024x1024",
+    #   quality="standard",
+    #   n=1,
+    # )
+    # image_url = image_response.data[0].url
+
+    # st.image(image_url, caption='Generated Image', use_column_width=True)
+
+    st.title('Generated Article')
     st.write(response.candidates[0].content.parts[0].text)
